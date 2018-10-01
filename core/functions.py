@@ -1,18 +1,45 @@
+from datetime import*
 import os
 import requests
 import time
 
 
+def input_hostname():
+    hs = input("enter a hostname or press 'enter' to use default google.com: ")
+    hostname = hs if hs else "google.com"
+    print("hostname is set as", hostname)
+    return hostname
+
+
+def input_params():
+    dr = input("enter test duration in minutes (int) or press 'enter' to use default 2: ")
+    fr = input("enter frequency in seconds (int) or press 'enter' to use default 20: ")
+    duration, freq = (int(dr), int(fr)) if all((dr, fr)) else (2, 20)
+    print("test duration is set as", duration, "minutes,", "frequency is set as", freq, "seconds")
+    return duration, freq
+
+
+def store_dir(hostname):
+    if "results" not in os.listdir():
+        os.mkdir("results")
+    os.chdir("results")
+
+    if hostname not in os.listdir():
+        os.mkdir(hostname)
+    os.chdir(hostname)
+
+    filename = hostname.split(".")[0] + "_" + str(datetime.now()).split()[0] + "_" + str(len(os.listdir())) + ".csv"
+    return filename
+
+
 def w_latency_time(hostname):
     ping_report = [line.split() for line in os.popen("ping -n 10 " + hostname)]
-    ping_delay = int(ping_report[-1][-2])
-    return ping_delay
+    return int(ping_report[-1][-2])
 
 
 def l_latency_time(hostname):
     ping_report = [line.split() for line in os.popen("ping -c 10 -q " + hostname)]
-    ping_delay = int(float(ping_report[-1][-2].split("/")[1]))
-    return ping_delay
+    return int(float(ping_report[-1][-2].split("/")[1]))
 
 
 def page_loading(hostname):
