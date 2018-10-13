@@ -8,6 +8,7 @@ def input_hostname():
     hs = input("enter a hostname or press 'enter' to use default google.com: ")
     hostname = hs if hs else "google.com"
     print("hostname is set as", hostname)
+    print()
     return hostname
 
 
@@ -16,6 +17,7 @@ def input_params():
     fr = input("enter frequency in seconds (int) or press 'enter' to use default 20: ")
     duration, freq = (int(dr), int(fr)) if all((dr, fr)) else (2, 20)
     print("test duration is set as", duration, "minutes,", "frequency is set as", freq, "seconds")
+    print()
     return duration, freq
 
 
@@ -30,6 +32,10 @@ def store_dir(hostname):
 
     filename = hostname.split(".")[0] + "_" + str(datetime.now()).split()[0] + "_" + str(len(os.listdir())) + ".csv"
     return filename
+
+
+def now():
+    return time.ctime(time.time()).split()[-2]
 
 
 def w_latency_time(hostname):
