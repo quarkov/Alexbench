@@ -30,7 +30,11 @@ def store_dir(hostname):
         os.mkdir(hostname)
     os.chdir(hostname)
 
-    filename = hostname.split(".")[0] + "_" + str(datetime.now()).split()[0] + "_" + str(len(os.listdir())) + ".csv"
+    if str(len(os.listdir())+1) not in os.listdir():
+        os.mkdir(str(len(os.listdir())+1))
+    os.chdir(str(len(os.listdir())))
+
+    filename = hostname.split(".")[0] + "_" + str(datetime.now()).split()[0] + "_" + str(len(os.listdir()))
     return filename
 
 
