@@ -1,7 +1,6 @@
-import matplotlib.pyplot as plt
-import webbrowser
 import numpy as np
 from core.functions import*
+from core.web_page_open import*
 from core.classes import*
 import os
 import csv
@@ -14,11 +13,13 @@ duration, freq = input_params()
 filename = store_dir(hostname)
 results = open(filename + ".csv", "a")
 csv.writer(results).writerows([['time', 'ping', 'load']])
+web_page_open(filename, freq)
+
+
 tests_number = duration*60//freq + 1
 
 fig, ax = plt.subplots()
-
-ax.set_title(filename, size=20)
+ax.set_title(filename, size=10)
 ax.set_xlabel('time, ms')
 ax.xaxis.grid(True)
 ax.invert_yaxis()
@@ -42,7 +43,7 @@ for test in range(tests_number):
     print(clock)
     fig.canvas.draw()
     plt.savefig(filename + ".svg")
-    webbrowser.open(filename + ".svg", new=0)
     sleep_thread.join()
     print("ok", time.time() - start)
 results.close()
+print(os.listdir())
