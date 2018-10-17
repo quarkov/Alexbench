@@ -1,12 +1,9 @@
 import webbrowser
-from matplotlib import pyplot as plt
 
 
 def web_page_open(path, freq):
 
     chart = path+".svg"
-    plt.subplot()
-    plt.savefig(chart)
 
     web_page = """
     <!DOCTYPE html>
@@ -20,8 +17,7 @@ def web_page_open(path, freq):
     </script>
     </head>
     <body>
-    <h2>Using a Full URL File Path</h2>
-    <img src=\""""+chart+"""\" alt="chart" style="width:1000px">
+    <img src=\""""+chart+"""\" alt="chart" style="width:750px">
     </body>
     </html>"""
 
