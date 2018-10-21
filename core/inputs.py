@@ -11,10 +11,11 @@ def input_hostname():
     response = [line.split() for line in popen("ping -n 1 " + hostname)] if name == "nt" else\
         [line.split() for line in popen("ping -c 1 -q " + hostname)]
     ip = 0
-    for chunk in response[1]:
-        if chunk.count(".") == 3:
-            ip = chunk
-            break
+    for chunk in response:
+        for piece in chunk:
+            if piece.count(".") == 3:
+                ip = chunk
+                break
     if ip:
         print("hostname is set as", hostname)
         print()
@@ -40,7 +41,7 @@ def digit_input(min_value, default):
 def input_params():
     print("enter test duration in minutes (int >= 1) or press 'enter' to use default 1 minute:")
     duration = digit_input(1, 1)
-    print("enter measurement frequency in seconds (int >= 5) or press 'enter' to use default 10 seconds:")
-    frequency = digit_input(5, 10)
+    print("enter measurement frequency in seconds (int >= 2) or press 'enter' to use default 2 seconds:")
+    frequency = digit_input(2, 2)
     print("ok, parameters are set; duration =", duration, "min, frequency =", frequency, "secs.")
     return duration, frequency
