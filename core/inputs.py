@@ -1,15 +1,46 @@
+from os import name, popen
+
+
 def input_hostname():
     hs = input("enter a hostname or press 'enter' to use default google.com: ")
     hostname = hs if hs else "google.com"
-    print("hostname is set as", hostname)
-    print()
-    return hostname
+    if hostname.isdecimal():
+        print("incorrect hostname, try again")
+        return input_hostname()
 
+    response = [line.split() for line in popen("ping -n 1 " + hostname)] if name == "nt" else\
+        [line.split() for line in popen("ping -c 1 -q " + hostname)]
+    ip = 0
+    for chunk in response[1]:
+        if chunk.count(".") == 3:
+            ip = chunk
+            break
+    if ip:
+        print("hostname is set as", hostname)
+        print()
+        return hostname
+    else:
+        print("incorrect hostname, try again")
+        print()
+        return input_hostname()
+
+
+def digit_input(min_value, default):
+    digit = input()
+    if not digit:
+        return default
+    if not digit.isdecimal():
+        print("an integer number is expected, try again")
+        return digit_input(min_value, default)
+    if int(digit) < min_value:
+        print("an integer >=", min_value, "is expected, try again")
+        return digit_input(min_value,default)
+    return int(digit)
 
 def input_params():
-    dr = input("enter test duration in minutes (int) or press 'enter' to use default 1: ")
-    fr = input("enter frequency in seconds (int) or press 'enter' to use default 10: ")
-    duration, freq = (int(dr), int(fr)) if all((dr, fr)) else (1, 10)
-    print("test duration is set as", duration, "minutes,", "frequency is set as", freq, "seconds")
-    print()
-    return duration, freq
+    print("enter test duration in minutes (int >= 1) or press 'enter' to use default 1 minute:")
+    duration = digit_input(1, 1)
+    print("enter measurement frequency in seconds (int >= 5) or press 'enter' to use default 10 seconds:")
+    frequency = digit_input(5, 10)
+    print("ok, parameters are set; duration =", duration, "min, frequency =", frequency, "secs.")
+    return duration, frequency
