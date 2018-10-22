@@ -4,6 +4,7 @@ import time as t
 
 def html_get(hostname):
     start = t.time()
-    requests.get("https://" + hostname)
+    page = requests.get("https://" + hostname)
     finish = t.time()
-    return int((finish - start)*1000)
+    code = page.status_code
+    return [int((finish - start)*1000), code] if code == 200 else [0, code]
