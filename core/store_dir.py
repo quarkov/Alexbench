@@ -3,21 +3,19 @@ from datetime import*
 
 
 def store_dir(hostname):
+    today = str(datetime.now()).split()[0]
+    folder_seq = ["results", hostname, today]
+    for folder in folder_seq:
+        if folder not in listdir('.'):
+            mkdir(folder)
+        chdir(folder)
+    index = "0"
+    for i in range(1,len(listdir('.'))+2):
+        if str(i) not in listdir('.'):
+            index = str(i)
+            mkdir(index)
+            chdir(index)
+            break
 
-    if "results" not in listdir():
-        mkdir("results")
-    chdir("results")
-
-    hs = hostname.replace("/", ".")
-
-    if hs not in listdir():
-        mkdir(hs)
-    chdir(hs)
-
-    if str(len(listdir())+1) not in listdir():
-        index = str(len(listdir())+1)
-        mkdir(str(len(listdir())+1))
-    chdir(str(len(listdir())))
-
-    filename = hs.split(".")[0] + "_" + str(datetime.now()).split()[0] + "_" + index
+    filename = hostname.split(".")[0] + "_" + today + "_" + index
     return filename
