@@ -14,8 +14,11 @@ def input_hostname():
     for chunk in response:
         for piece in chunk:
             if piece.count(".") == 3:
-                ip = chunk
+                ip = piece
                 break
+        if ip:
+            break
+
     if ip:
         print("hostname is set as", hostname)
         print()
