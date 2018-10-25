@@ -1,11 +1,12 @@
-from core.classes import*
 from core.html_get import*
 from core.inputs import*
 from core.now import*
 from core.ping import latency_time
 from core.plots import*
 from core.store_dir import*
+from core.threads import*
 from core.web_page_open import*
+from time import time, sleep
 import csv
 
 
@@ -19,18 +20,20 @@ results = open(filename + ".csv", "a")
 csv.writer(results).writerows([['time', 'ping', 'load']])
 
 fig, ax = plot_init(filename, tests_number)
-web_page_open(filename, freq)
+web_page_open(filename, duration, freq)
 
-for test in range(tests_number):
-    lat_thread = ThreadValue(target=latency_time, args=[hostname])
-    per_thread = ThreadValue(target=html_get, args=[hostname])
-    sleep_thread = ThreadValue(target=t.sleep, args=[freq])
-    lat_thread.start(), per_thread.start(), sleep_thread.start()
-    clock, latency, [loading, status] = now(), lat_thread.join(), per_thread.join()
+thrs = ThreadList(tests_number)
+[thrs.add(func, hostname) for func in [latency_time, html_get]]
 
-    csv.writer(results).writerows([[clock, latency, loading]])
-    plot_update(filename, fig, test, clock, loading, latency, status)
-    sleep_thread.join()
-    print("test", test+1, "has passed, tests remain:", tests_number-test-1)
+for i in range(tests_number):
+    start = time()
+    thrs.run()
+    thrs.wait()
+    latency, [loading, status] = thrs.result()
+    csv.writer(results).writerows([[now()] + thrs.result()])
+    plot_update(filename, fig, i, now(), loading, latency, status)
+    print("test", i+1, "has passed, tests remain:", tests_number-i-1)
+    delta = time() - start
+    sleep((freq - delta) if freq > delta else 0)
 
 results.close()
