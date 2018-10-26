@@ -1,23 +1,31 @@
 import webbrowser
 
 
-def web_page_open(path, freq):
+def web_page_open(path, freq, counter):
 
     chart = path+".svg"
+    refresh_time = str(freq * (1 + 1 / counter) * 1000)
+    counter = str(counter + 10)
 
     web_page = """
     <!DOCTYPE html>
     <html>
     <head>
-    <script>
-    <!--
-    function timedRefresh(timeoutPeriod) {setTimeout("location.reload(true);",timeoutPeriod);}
-    window.onload = timedRefresh("""+str(freq*1000)+""");
-    //   -->
-    </script>
+        <script>
+            var i = localStorage.getItem(" """ + path + """ ");
+            if (i == null) {
+                i = """ + counter + """;
+            }
+            setInterval(function () {
+                localStorage.setItem(" """ + path + """ ", --i);
+                if (i >= 0) {
+                    window.location.reload();
+                }
+            }, """ + refresh_time + """);
+        </script>
     </head>
     <body>
-    <img src=\""""+chart+"""\" alt="chart" style="width:750px">
+        <img src=\""""+chart+"""\" alt="chart" style="width:750px" align="top">
     </body>
     </html>"""
 
