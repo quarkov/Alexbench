@@ -3,10 +3,11 @@ from matplotlib import pyplot as plt
 
 
 def plot_init(filename, tests_number):
-    fig, ax = plt.subplots(figsize=(10, 0.5 * tests_number))
+    fig, ax = plt.subplots(figsize=(10, 0.5 * tests_number), frameon=False, tight_layout=True)
     ax.set_title(filename, size=14)
     ax.set_xlabel('time, ms')
     ax.set_xlim(0, 2000)
+    ax.set_ylim(-1, tests_number)
     ax.set_xticks(list(range(0, 2100, 100)), minor=True)
     ax.xaxis.grid(True)
     ax.invert_yaxis()
