@@ -20,7 +20,7 @@ results = open(filename + ".csv", "a")
 csv.writer(results).writerows([['time', 'ping', 'load']])
 
 fig, ax = plot_init(filename, tests_number)
-web_page_open(filename, duration, freq)
+web_page_open(filename, freq, tests_number)
 
 thrs = ThreadList(tests_number)
 [thrs.add(func, hostname) for func in [latency_time, html_get]]
@@ -30,10 +30,14 @@ for i in range(tests_number):
     thrs.run()
     thrs.wait()
     latency, [loading, status] = thrs.result()
+    print("thread end=", time()-start)
     csv.writer(results).writerows([[now()] + thrs.result()])
+    print("csv write=", time()-start)
     plot_update(filename, fig, i, now(), loading, latency, status)
+    print("plot update=", time()-start)
     print("test", i+1, "has passed, tests remain:", tests_number-i-1)
     delta = time() - start
+    print()
     sleep((freq - delta) if freq > delta else 0)
 
 results.close()
