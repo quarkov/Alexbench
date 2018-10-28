@@ -2,31 +2,34 @@ import socket
 
 
 def input_hostname():
-    hs = input("enter a hostname or press 'enter' to use default gdansk.pl: ")
-    hostname = hs if hs else "gdansk.pl"
-
-    try:
-        socket.gethostbyname(hostname)
-        print("hostname is set as", hostname)
-        print()
-        return hostname
-    except socket.error:
-        print("incorrect hostname, try again")
-        print()
-        return input_hostname()
+    default = "gdansk.pl"
+    for attempt in range(3):
+        hs = input("enter a hostname or press 'enter' to use default " + default + ": ")
+        hostname = hs if hs else default
+        try:
+            socket.gethostbyname(hostname)
+            print("hostname is set as", hostname)
+            print()
+            return hostname
+        except socket.error:
+            print("incorrect hostname, try again")
+    print("hostname is set by default:", default)
+    return default
 
 
 def digit_input(min_value, default):
-    digit = input()
-    if not digit:
-        return default
-    if not digit.isdecimal():
-        print("an integer number is expected, try again")
-        return digit_input(min_value, default)
-    if int(digit) < min_value:
-        print("an integer >=", min_value, "is expected, try again")
-        return digit_input(min_value,default)
-    return int(digit)
+    for attempt in range(3):
+        d = input()
+        digit = d if d else default
+        try:
+            if int(digit) >= min_value:
+                return int(digit)
+            else:
+                print("an integer >=", min_value, "is expected, try again")
+        except ValueError:
+            print("it's not an integer, try again")
+    print("value is set by default:", default)
+    return default
 
 
 def input_params():
@@ -34,5 +37,5 @@ def input_params():
     duration = digit_input(1, 1)
     print("enter measurement frequency in seconds (int >= 2) or press 'enter' to use default 2 seconds:")
     frequency = digit_input(2, 2)
-    print("ok, parameters are set; duration =", duration, "min, frequency =", frequency, "secs.")
+    print("ok, parameters are set; duration =", duration, "min, frequency =", frequency, "sec.")
     return duration, frequency
