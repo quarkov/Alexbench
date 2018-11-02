@@ -14,5 +14,5 @@ def store_dir(hostname):
             mkdir(index)
             chdir(index)
             break
-    filename = hostname.split(".")[0] + "_" + today + "_" + index
+    filename = hostname.replace(".", "_") + "_" + today + "_" + index
     return filename

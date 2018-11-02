@@ -3,22 +3,20 @@ from time import time, sleep
 
 
 class ThreadValue(Thread):
-    def __init__(self, fun, args, nmax):
+    def __init__(self, obj, nmax):
         Thread.__init__(self)
-        self._fun = fun
-        self._args = args
-        self._result = None
+        self._obj = obj
         self._event = Event()
         self._nmax = nmax
 
     def run(self):
         for i in range(self._nmax):
             self._event.wait()
-            self._result = self._fun(self._args)
+            self._obj.run()
             self._event.clear()
 
     def result(self):
-        return self._result
+        return self._obj.result()
 
     def event(self):
         self._event.set()
@@ -32,8 +30,8 @@ class ThreadList:
         self._list = []
         self._nmax = nmax
 
-    def add(self, fun, arg):
-        thr = ThreadValue(fun, arg, self._nmax)
+    def add(self, obj):
+        thr = ThreadValue(obj, self._nmax)
         thr.start()
         self._list.append(thr)
 
@@ -45,9 +43,7 @@ class ThreadList:
             sleep(0.05)
 
     def result(self):
-        res = []
-        [res.append(thr.result()) for thr in self._list]
-        return res
+        return [thr.result() for thr in self._list]
 
     def print_list(self):
         [print(thr) for thr in self._list]

@@ -35,7 +35,7 @@ def digit_input(min_value, default):
 def input_params():
     print("enter test duration in minutes (int >= 1) or press 'enter' to use default 1 minute:")
     duration = digit_input(1, 1)
-    print("enter measurement frequency in seconds (int >= 2) or press 'enter' to use default 2 seconds:")
-    frequency = digit_input(2, 2)
+    print("enter measurement frequency in seconds (int >= 2) or press 'enter' to use default 5 seconds:")
+    frequency = digit_input(2, 5)
     print("ok, parameters are set; duration =", duration, "min, frequency =", frequency, "sec.")
     return duration, frequency
