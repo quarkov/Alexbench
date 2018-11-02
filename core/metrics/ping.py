@@ -1,5 +1,5 @@
 from os import popen, name
-from core.base_metric import*
+from core.metrics.base_metric import*
 
 class LatencyGet(BaseMetric):
     name = "latency"

@@ -1,6 +1,6 @@
 import requests
 import time as t
-from core.base_metric import*
+from core.metrics.base_metric import*
 
 
 class HtmlGet(BaseMetric):
@@ -16,9 +16,9 @@ class HtmlGet(BaseMetric):
 
     def _msg(self):
         if self._code != 200:
-            return "can't get web page, code - " + str(self._code)
+            return "can't get web page; code - " + str(self._code)
         elif self._res > self._res_max:
-            return "code - " + str(self._code) + ", loading time - " + str(self._res) + " ms"
+            return "code - " + str(self._code) + "; loading time - " + str(self._res) + " ms"
         else:
             return ""
 
@@ -32,5 +32,3 @@ class HtmlGet(BaseMetric):
         except requests.exceptions:
             self._code = 0
             self._res = 0
-
-
