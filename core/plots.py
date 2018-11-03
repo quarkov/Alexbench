@@ -18,6 +18,7 @@ class PlotWriter:
         self._coordMsg = [1400, 20]
 
     def ax_init(self):
+        self._ax = plt.gca()
         self._ax.set_title(self._filename, size=14, loc='left')
         self._ax.set_xlabel('time, ms')
         self._ax.set_xlim(self.x_min, self.x_max)
@@ -27,7 +28,7 @@ class PlotWriter:
         self._ax.invert_yaxis()
 
     def ax_refresh(self):
-        self._ax.cla()
+        plt.delaxes()
         self.ax_init()
         p = plt.barh(0, 0, height=0.6, color='blue')
         l = plt.barh(0, 0, height=0.6, color='green')
@@ -42,7 +43,7 @@ class PlotWriter:
             index = 0
             for item in record[1:]:
                 color = self._colorOk[index] if not item.msg() else self._colorError[index]
-                plt.barh(clock, item.checked_value(), color=color, height=self._height[index])
+                self._ax.barh(clock, item.checked_value(), color=color, height=self._height[index])
                 plt.text(self._coordMsg[index], clock, item.msg(), fontsize='small', va='baseline')
                 index += 1
 
