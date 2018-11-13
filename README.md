@@ -31,5 +31,7 @@ Download ZIP or clone the project.
      
 * That's it. The app doesn't need something more to be entered, it works.  
 
-Running monitor will be displayed on a new web page which will be popped. It shows up to 12 last measurements.  
-All the results will be kept into a folder titled _results_ in the app root directory locally.
+Running monitor will be displayed on a new web page which will be popped.  
+Although it shows up to 12 last measurements, all measurements are written to a .csv file.   
+And it's possible to have a look at them after the app stops.  
+All results (.csv, .svg, .html) will be kept in a folder titled _results_ in the app root directory locally.
