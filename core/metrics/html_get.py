@@ -1,4 +1,4 @@
-import requests
+import requests as r
 import time as t
 from core.metrics.base_metric import*
 
@@ -25,10 +25,10 @@ class HtmlGet(BaseMetric):
     def run(self):
         try:
             start = t.time()
-            page = requests.get("http://" + self._addr)
+            page = r.get("http://" + self._addr)
             finish = t.time()
             self._code = page.status_code
             self._res = int((finish - start)*1000) if self._code == 200 else 0
-        except requests.exceptions:
+        except (TypeError, r.exceptions.RequestException):
             self._code = 0
             self._res = 0
