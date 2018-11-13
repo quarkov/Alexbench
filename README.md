@@ -9,6 +9,7 @@ Again. Again. And again.
   
 ## Getting started   
 **Before you try to run the app make sure:**  
+* OS is Linux or Windows;
 * python interpreter (v.3.6 or higher) is installed on your computer;  
 * all of the prerequisite python modules are installed and up-to-date:
     * pip `python -m pip install -U pip`;
