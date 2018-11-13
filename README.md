@@ -26,7 +26,7 @@ Download ZIP or clone the project.
     or you even could skip this step by hitting 'enter', a default hostname will be used);  
     * test duration in minutes - how long you do wish the app to monitor a web page,  
     expected integers `from 1 up to 1440`, skip with 'enter' and a default paramater will be used;  
-    * measurement frequency in seconds - how often you want the app to make a measurement,  
+    * measurement interval in seconds - how often you want the app to make a measurement,  
     expected integers `from 2 up to duration time*60`, skip to use a default parameter.  
      
 * That's it. The app doesn't need something more to be entered, it works.  
